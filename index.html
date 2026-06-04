@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vale por una cena en la playa</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.65), transparent 34%),
+        linear-gradient(145deg, #ffe7c2, #f7c9a4 48%, #f3a6a6);
+      color: #573c3c;
+      overflow: hidden;
+    }
+    .decoration { position: fixed; font-size: 58px; opacity: .34; animation: float 5s ease-in-out infinite; }
+    .d1 { top: 7%; left: 7%; } .d2 { bottom: 8%; right: 8%; animation-delay: 1.3s; } .d3 { top: 16%; right: 13%; animation-delay: 2.1s; }
+    @keyframes float { 50% { transform: translateY(-15px) rotate(8deg); } }
+    .card {
+      width: min(770px, 100%);
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.95);
+      border-radius: 34px;
+      padding: 42px 26px;
+      text-align: center;
+      box-shadow: 0 24px 65px rgba(130, 71, 71, .26);
+      position: relative;
+      z-index: 2;
+    }
+    .pill {
+      display: inline-block;
+      background: #fff3df;
+      color: #b65f56;
+      padding: 10px 17px;
+      border-radius: 999px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+    h1 {
+      color: #b65f56;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -1px;
+    }
+    .subtitle {
+      max-width: 610px;
+      margin: 20px auto 0;
+      color: #74595a;
+      font-size: 19px;
+      line-height: 1.55;
+    }
+    .ticket {
+      max-width: 590px;
+      margin: 28px auto;
+      padding: 20px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #fff9ef, #fff0ef);
+      border: 2px dashed #d68e83;
+      color: #80514d;
+      line-height: 1.55;
+    }
+    .ticket strong { color: #b65f56; }
+    a {
+      display: inline-block;
+      text-decoration: none;
+      padding: 16px 27px;
+      border-radius: 999px;
+      color: white;
+      background: linear-gradient(135deg, #b65f56, #dd8173);
+      font-weight: 800;
+      font-size: 17px;
+      box-shadow: 0 12px 25px rgba(182, 95, 86, .3);
+      transition: .2s ease;
+    }
+    a:hover { transform: translateY(-2px); }
+    .footer { color: #b65f56; margin-top: 20px; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <div class="decoration d1">🌅</div>
+  <div class="decoration d2">🍷</div>
+  <div class="decoration d3">✨</div>
+
+  <main class="card">
+    <div class="pill">🎁 Vale especial</div>
+    <h1>Vale por una cena<br />en la playa</h1>
+    <p class="subtitle">
+      Una noche tranquila, algo rico para picar y el sonido del mar de fondo.
+    </p>
+
+    <section class="ticket">
+      <strong>Incluye:</strong> atardecer, conversación, risas, comida para compartir y una noche para recordar.
+    </section>
+
+    <a href="requisitos-cena-playa.html">Canjear vale</a>
+    <div class="footer">Preparado con cariño ❤️</div>
+  </main>
+</body>
+</html>

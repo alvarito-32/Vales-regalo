@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Requisitos para la cena en la playa</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
+    body {
+      min-height: 100vh;
+      padding: 24px 16px 42px;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,.32), transparent 34%),
+        linear-gradient(150deg, #183f5c, #245a72 46%, #d27b6c 100%);
+      color: #fff7ed;
+    }
+    .wrap { width: min(820px, 100%); margin: 0 auto; }
+    .hero, .panel, .progress-card {
+      background: rgba(16, 49, 70, .84);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 18px 44px rgba(0,0,0,.22);
+    }
+    .hero {
+      padding: 30px 20px;
+      border-radius: 28px;
+      text-align: center;
+    }
+    .pill {
+      color: #ffd59a;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    h1 {
+      color: #ffd59a;
+      margin: 12px auto;
+      font-size: clamp(34px, 6vw, 60px);
+      line-height: 1.08;
+    }
+    .hero p {
+      color: #f5e6d2;
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+    .progress-card {
+      margin: 18px 0;
+      border-radius: 22px;
+      padding: 18px;
+    }
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: #ffd59a;
+      font-weight: 800;
+    }
+    .bar {
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.14);
+    }
+    .bar > div {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #f6b65a, #ffd59a);
+      transition: width .3s ease;
+    }
+    .panel {
+      border-radius: 24px;
+      padding: 21px;
+    }
+    .panel h2 {
+      color: #ffd59a;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+    .panel p {
+      color: #e6d5c3;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      line-height: 1.4;
+    }
+    .item:last-child { border-bottom: none; }
+    input[type="checkbox"] {
+      width: 21px;
+      height: 21px;
+      margin-top: 1px;
+      accent-color: #ffd59a;
+      flex: 0 0 auto;
+    }
+    label { cursor: pointer; color: #fff7ed; font-size: 17px; }
+    .completed {
+      display: none;
+      text-align: center;
+      margin-top: 18px;
+      background: rgba(27, 125, 84, .4);
+      border: 1px solid rgba(134, 239, 172, .55);
+      color: #dbffe6;
+      border-radius: 20px;
+      padding: 17px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    button, a.button {
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-weight: 800;
+      font-size: 15px;
+    }
+    .back { background: #ffd59a; color: #24465b; }
+    .secondary { background: transparent; color: #ffd59a; border: 1px solid rgba(255,213,154,.55); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="pill">🌊 Plan desbloqueado</div>
+      <h1>Disfrutar de la noche<br />en la playa</h1>
+      <p>
+        Para preparar una cena perfecta junto al mar, solo queda comprobar que llevamos todo lo necesario.
+      </p>
+    </section>
+
+    <section class="progress-card">
+      <div class="progress-top">
+        <span>Preparativos de la cena</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="bar"><div id="progressBar"></div></div>
+    </section>
+
+    <section class="panel">
+      <h2>🧺 Requisitos</h2>
+      <p>Marca cada cosa cuando esté preparada.</p>
+      <div id="requirements"></div>
+    </section>
+
+    <div id="completedMessage" class="completed">
+      🌅 ¡Todo preparado! Ya solo queda elegir la noche, ir a la playa y disfrutar del plan juntos.
+    </div>
+
+    <div class="actions">
+      <a class="button back" href="index.html">← Volver al vale</a>
+      <button class="secondary" id="resetButton">Reiniciar casillas</button>
+    </div>
+  </main>
+
+  <script>
+    const requirements = [
+      "Vino",
+      "Cerveza",
+      "Patatas",
+      "Aceitunas",
+      "Algo más para picar",
+      "Vasos",
+      "Toalla grande",
+      "Nevera"
+    ];
+
+    const STORAGE_KEY = "requisitosCenaPlaya";
+    const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    const container = document.getElementById("requirements");
+
+    function makeId(index) {
+      return `requirement-${index}`;
+    }
+
+    function updateProgress() {
+      const ids = requirements.map((_, index) => makeId(index));
+      const completed = ids.filter(id => state[id]).length;
+      const total = ids.length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+
+      document.getElementById("progressText").textContent = `${completed} / ${total}`;
+      document.getElementById("progressBar").style.width = `${percent}%`;
+      document.getElementById("completedMessage").style.display = completed === total ? "block" : "none";
+    }
+
+    requirements.forEach((title, index) => {
+      const id = makeId(index);
+      const row = document.createElement("div");
+      row.className = "item";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = id;
+      checkbox.checked = Boolean(state[id]);
+
+      checkbox.addEventListener("change", () => {
+        state[id] = checkbox.checked;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        updateProgress();
+      });
+
+      const label = document.createElement("label");
+      label.htmlFor = id;
+      label.textContent = title;
+
+      row.appendChild(checkbox);
+      row.appendChild(label);
+      container.appendChild(row);
+    });
+
+    document.getElementById("resetButton").addEventListener("click", () => {
+      const confirmReset = confirm("¿Seguro que quieres borrar todas las casillas marcadas?");
+      if (!confirmReset) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
